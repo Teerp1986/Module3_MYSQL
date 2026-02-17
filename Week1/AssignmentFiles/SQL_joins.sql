@@ -8,6 +8,7 @@ USE coffeeshop_db;
 select p.name AS product_name, c.name AS category_name, p.price FROM products p
 JOIN categories c 
     ON p.category_id = c.category_id;
+    
 -- Q2) For each order item, show: order_id, order_datetime, store_name,
 --     product_name, quantity, line_total (= quantity * products.price).
 --     Sort by order_datetime, then order_id.
@@ -21,6 +22,7 @@ JOIN order_items oi
 JOIN products p 
     ON oi.product_id = p.product_id
 ORDER BY o.order_datetime, o.order_id;
+
 -- Q3) Customer order history (PAID only):
 --     For each order, show customer_name, store_name, order_datetime,
 --     order_total (= SUM(quantity * products.price) per order).
@@ -36,12 +38,14 @@ JOIN products p
     ON oi.product_id = p.product_id
 WHERE o.status = 'PAID'
 GROUP BY o.order_id;
+
 -- Q4) Left join to find customers who have never placed an order.
 --     Return first_name, last_name, city, state.
 select c.first_name, c.last_name, c.city, c.state FROM customers c
 LEFT JOIN orders o 
     ON c.customer_id = o.customer_id
 WHERE o.order_id IS NULL;
+
 -- Q5) For each store, list the top-selling product by units (PAID only).
 --     Return store_name, product_name, total_units.
 --     Hint: Use a window function (ROW_NUMBER PARTITION BY store) or a correlated subquery.
@@ -60,6 +64,7 @@ WITH store_sales AS (
 )
 select store_name, product_name, total_units FROM store_sales
 WHERE rn = 1;
+
 -- Q6) Inventory check: show rows where on_hand < 12 in any store.
 --     Return store_name, product_name, on_hand.
 select s.name AS store_name, p.name AS product_name, i.on_hand FROM inventory i
@@ -68,12 +73,14 @@ JOIN stores s
 JOIN products p 
     ON i.product_id = p.product_id
 WHERE i.on_hand < 12;
+
 -- Q7) Manager roster: list each store's manager_name and hire_date.
 --     (Assume title = 'Manager').
 select s.name AS store_name, CONCAT(e.first_name, ' ', e.last_name) AS manager_name, e.hire_date FROM employees e
 JOIN stores s 
     ON e.store_id = s.store_id
 WHERE e.title = 'Manager';
+
 -- Q8) Using a subquery/CTE: list products whose total PAID revenue is above
 --     the average PAID product revenue. Return product_name, total_revenue.
 WITH product_revenue AS (
@@ -98,6 +105,7 @@ LEFT JOIN orders o
     ON c.customer_id = o.customer_id
     AND o.status = 'PAID'
 GROUP BY c.customer_id;
+
 -- Q10) Product mix report (PAID only):
 --     For each store and category, show total units and total revenue (= SUM(quantity * products.price)).
 select s.name AS store_name, c.name AS category_name, SUM(oi.quantity) AS total_units, SUM(oi.quantity * p.price) AS total_revenue FROM orders o
