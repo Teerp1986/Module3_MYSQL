@@ -19,5 +19,5 @@ Click **Fork** (top right on GitHub) to create your own copy under your GitHub a
 On your forked repo page, click **Code** → copy the URL, then run:
 
 ```bash
-git clone <PASTE_YOUR_FORK_URL_HERE>
-cd <REPO_FOLDER_NAME>
+git clone <https://github.com/Teerp1986/Module3_MYSQL.git>
+cd <Module3_MYSQL>
