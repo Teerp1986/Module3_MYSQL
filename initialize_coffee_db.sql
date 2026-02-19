@@ -1,3 +1,3 @@
 use coffeeshop_db;
 
-select * from employees;
+select * from stores;
